@@ -1,0 +1,122 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:531: checking for gcc
+configure:644: checking whether the C compiler (gcc  ) works
+configure:660: gcc -o conftest    conftest.c  1>&5
+configure:686: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:691: checking whether we are using GNU C
+configure:700: gcc -E conftest.c
+configure:719: checking whether gcc accepts -g
+configure:751: checking for POSIXized ISC
+configure:802: checking for a BSD compatible install
+configure:856: checking whether gcc accepts -mlongcall
+configure:879: checking how to run the C preprocessor
+configure:900: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:963: checking for X
+configure:1030: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1026:27: fatal error: X11/Intrinsic.h: No such file or directory
+compilation terminated.
+configure: failed program was:
+#line 1025 "configure"
+#include "confdefs.h"
+#include <X11/Intrinsic.h>
+configure:1106: gcc -o conftest -g -O2   conftest.c -lXt  1>&5
+/usr/bin/ld: cannot find -lXt
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1099 "configure"
+#include "confdefs.h"
+
+int main() {
+XtMalloc()
+; return 0; }
+configure:1794: checking for ANSI C header files
+configure:1807: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1874: gcc -o conftest -g -O2   conftest.c  1>&5
+configure: In function 'main':
+configure:1869:67: warning: incompatible implicit declaration of built-in function 'exit' [enabled by default]
+configure:1901: checking for fcntl.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for sys/time.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for unistd.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for getopt.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for limits.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for errno.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for utime.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1901: checking for SDL/SDL.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1907:21: fatal error: SDL/SDL.h: No such file or directory
+compilation terminated.
+configure: failed program was:
+#line 1906 "configure"
+#include "confdefs.h"
+#include <SDL/SDL.h>
+configure:1901: checking for SDL/SDL_audio.h
+configure:1911: gcc -E  conftest.c >/dev/null 2>conftest.out
+configure:1907:27: fatal error: SDL/SDL_audio.h: No such file or directory
+compilation terminated.
+configure: failed program was:
+#line 1906 "configure"
+#include "confdefs.h"
+#include <SDL/SDL_audio.h>
+configure:1938: checking for SDL_Init in -lSDL
+configure:1957: gcc -o conftest -g -O2   conftest.c -lSDL   1>&5
+/usr/bin/ld: cannot find -lSDL
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1946 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char SDL_Init();
+
+int main() {
+SDL_Init()
+; return 0; }
+configure:1985: checking for SDL_OpenAudio
+configure:2013: gcc -o conftest -g -O2   conftest.c  1>&5
+/tmp/ccGkJvR4.o: In function `main':
+/home/artis/git/VMU-it/tools/vms/configure:2007: undefined reference to `SDL_OpenAudio'
+collect2: ld returned 1 exit status
+configure: failed program was:
+#line 1990 "configure"
+#include "confdefs.h"
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char SDL_OpenAudio(); below.  */
+#include <assert.h>
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char SDL_OpenAudio();
+
+int main() {
+
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_SDL_OpenAudio) || defined (__stub___SDL_OpenAudio)
+choke me
+#else
+SDL_OpenAudio();
+#endif
+
+; return 0; }
+configure:2034: checking for working const
+configure:2088: gcc -c -g -O2  conftest.c 1>&5
+configure:2109: checking for size_t
+configure:2142: checking whether time.h and sys/time.h may both be included
+configure:2156: gcc -c -g -O2  conftest.c 1>&5
+configure:2177: checking whether struct tm is in sys/time.h or time.h
+configure:2190: gcc -c -g -O2  conftest.c 1>&5
+configure:2213: checking number of arguments to gettimeofday
+configure:2238: gcc -o conftest -g -O2   conftest.c  1>&5
+configure:2256: checking type of second argument to gettimeofday
+configure:2282: gcc -o conftest -g -O2   conftest.c  1>&5

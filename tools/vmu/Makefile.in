@@ -1,0 +1,21 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+CC = @CC@
+CFLAGS = @CFLAGS@ @X_CFLAGS@ @DEFS@
+LDFLAGS = @LDFLAGS@ @X_LIBS@
+LIBS = @X_PRE_LIBS@ -lX11 @X_EXTRA_LIBS@ @LIBS@
+
+VMSOBJS = main.o mainwin.o cpu.o lcdimg.o getopt.o
+
+vms: $(VMSOBJS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(LIBS)
+
+nsplugin: NPdreamcast_lcdimg.so
+	:
+
+NPdreamcast_lcdimg.so: nsplugin.o
+	$(LD) -G -o $@ $^
+
+clean :
+	rm -f vms $(VMSOBJS)
+
