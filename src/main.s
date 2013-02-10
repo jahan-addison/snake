@@ -85,8 +85,8 @@ goodbye:
 ;;  Game Header
 
  .org    $200
- .byte   "VMU-it          "                    ; 
- .byte   "written: jahan.addison@jacata.me"    ; 
+ .byte   "VMU-it          "                     
+ .byte   "written: jahan.addison@jacata.me"     
 
 ;;  Game Icon
 
@@ -101,7 +101,7 @@ goodbye:
 
   .org    $280
 
-  ; An sample icon for now, that's just a yellow background
+  ; A sample icon for now, just a yellow background
 
   .byte $44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44
   .byte $44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44,$44
