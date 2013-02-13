@@ -9,6 +9,14 @@ The VMU flash memory contains 128 kilobytes of storage. These are divided into 2
 The rest of the blocks contain filesystem information, or are simply not used at all.  
 
   
+  
+What is it?
+-----------
+  
+As of current, I'm more or less working towards developing a game for the device.  
+I'm not quite sure what, exactly, but leaning towards the classical "snake."
+  
+  
 
 
 _Many thanks to Marcus Comstedt_
