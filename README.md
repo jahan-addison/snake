@@ -14,7 +14,8 @@ What is it?
 -----------
   
 As of current, I'm more or less working towards developing a game for the device.  
-I'm not quite sure what, exactly, but leaning towards the classical "snake."
+I'm not quite sure what, exactly, but leaning towards the classic "snake."
+  
   
   
 
