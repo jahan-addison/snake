@@ -142,7 +142,7 @@ goodbye:
  ;
 
 start:
-  ; The following is required for any proram to work
+  ; leggo.
   mov #$a1,ocr
   mov #$09,mcr
   mov #$80,vccr
@@ -151,8 +151,13 @@ start:
   mov #$ff,p3
 
   call clrscr
-  ; do nothing.
 
+  mov #$80, 2
+  mov #$ff, @R2
+  ld  2
+  add #6
+  st 2
+  mov #$ff, @R2 
 
 
 
