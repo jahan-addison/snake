@@ -13,11 +13,12 @@ The rest of the blocks contain filesystem information, or are simply not used at
 What is it?
 -----------
   
-As i experiment with the device's firmware, CPU, and LCD frame buffer i am slowly progressing  
-towards writing "snake" for the device
+As i experiment with the device's firmware, CPU, and LCD frame buffer i am slowly progressing towards writing "snake" for the device
   
   
   
+  
+
 
 
 _Many thanks to Marcus Comstedt_
