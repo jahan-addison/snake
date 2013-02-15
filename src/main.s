@@ -142,7 +142,6 @@ goodbye:
  ;
 
 start:
-  ; leggo.
   mov #$a1,ocr
   mov #$09,mcr
   mov #$80,vccr
