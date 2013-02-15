@@ -13,8 +13,8 @@ The rest of the blocks contain filesystem information, or are simply not used at
 What is it?
 -----------
   
-As of current, I'm more or less working towards developing a game for the device.  
-I'm not quite sure what, exactly, but leaning towards the classic "snake."
+As i experiment with the device's firmware, CPU, and LCD frame buffer i am slowly progressing  
+towards writing "snake" for the device
   
   
   
