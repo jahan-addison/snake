@@ -150,25 +150,40 @@ start:
   mov #$ff,p3
 
   call clrscr
-
+  xor c
   mov #$80, 2
   mov #$ff, @R2
-  ld  2
-  add #6
+.loop:
+  call pause
+  ld 2
+  add #1
   st 2
-  mov #$ff, @R2 
-
+  inc c
+  mov #$ff, @R2
+  ld c
+  bne #$20, .loop
+  
 
 
 .keypress:
   call getkeys
   bn acc,4,.keypress    
   bn acc,5,.keypress     
-  ;
+ 
   br .keypress            
 
 
 ; Subroutines.
+
+pause:
+  set1 pcon,0
+  set1 t1cnt,7           
+  ld t1l         
+  bne #10, pause
+  clr1 pcon,0
+  clr1 t1cnt, 7
+  ret            
+  
 
 clrscr:
   clr1 ocr,5
