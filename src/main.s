@@ -176,15 +176,16 @@ start:
 ; Subroutines.
 
 pause:
-  mov #$64,t1lr
+  mov #0,b
+  mov #1,t1lr
   mov #$48,t1cnt 
-.start:
+  .run:
   ld t1lr
-  bne #$ff, .start
+  bne #$ff,.run
   clr1 t1cnt, 7
-  ret            
-  
-
+  ret  
+           
+    
 clrscr:
   clr1 ocr,5
   ;
