@@ -150,18 +150,17 @@ start:
   mov #$ff,p3
 
   call clrscr
-  xor c
-  mov #$80, 2
-  mov #$ff, @R2
-.loop:
+  mov #$80,2
+  mov #$ff,@R2
+  .loop:
   call pause
   ld 2
   add #1
   st 2
   inc c
-  mov #$ff, @R2
+  mov #$ff,@R2
   ld c
-  bne #20, .loop
+  bne #20,.loop
   
 
 
@@ -177,11 +176,15 @@ start:
 
 pause:
   mov #0,b
+  .start:
   mov #1,t1lr
   mov #$48,t1cnt 
   .run:
   ld t1lr
   bne #$ff,.run
+  inc b
+  ld b
+  bne #3,.start
   clr1 t1cnt, 7
   ret  
            
