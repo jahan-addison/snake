@@ -148,7 +148,6 @@ start:
   clr1 p3int,0
   clr1 p1,7
   mov #$ff,p3
-
   call clrscr
   mov #$80,2
   mov #$ff,@R2
@@ -191,32 +190,25 @@ pause:
     
 clrscr:
   clr1 ocr,5
-  ;
   push acc
   push xbnk
   push 2
-  ;
   mov #0,xbnk
   .cbank:
   mov #$80,2
   .cloop:
   mov #0,@R2
-  ;
   inc 2
-  ;
   ld 2
   and #$f
   bne #$c,.cskip
-  ;
   ld 2
   add #4
   st 2
   .cskip:
   ld 2
   bnz .cloop
-  ;
   bp xbnk,0,.cexit
-  ;
   mov #1,xbnk
   br .cbank
   .cexit:
@@ -231,37 +223,29 @@ setscr:
   clr1 ocr,5
   push acc
   push xbnk
-  ;
   push c
   push 2
   mov #$80,2
-  ;
   xor acc
   st xbnk
   st c
 .sloop:
   ldc
   st @R2
-  ;
   inc 2
-  ;
   ld 2
   and #$f
   bne #$c,.sskip
-  ;
   ld 2
   add #4
   st 2
-  ;
   bnz .sskip
-  ;
   inc xbnk
   mov #$80,2
 .sskip:
   inc c
   ld c
   bne #$c0,.sloop
-  ;
   pop 2
   pop c
   pop xbnk
@@ -282,13 +266,11 @@ sleep:
   set1 pcon,0            
   bn p3,7,sleep          
   mov #0,vccr            
-  ;
 sleepmore:
   set1 pcon,0             
   bp p7,0,quit            
   bp p3,7,sleepmore      
   mov #$80,vccr          
-  ;
 waitsleepup:
   set1 pcon,0            
   bn p3,7,waitsleepup
