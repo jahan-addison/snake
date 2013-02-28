@@ -27,6 +27,7 @@
 
 ;; VARIABLES
 
+COUNTER = $20
 
 ;; Reset and Interrupt Vectors
 
@@ -150,16 +151,26 @@ start:
   mov #$ff,p3
   call clrscr
   mov #$80,2
-  mov #$ff,@R2
+  mov #1,COUNTER
+  mov #$10,@R2
   .loop:
   call pause
+  mov #0,@R2
   ld 2
-  add #1
+  add #6
   st 2
-  inc c
-  mov #$ff,@R2
-  ld c
-  bne #20,.loop
+  ld COUNTER
+  be #2,.skip
+  inc COUNTER
+  .cskip:
+  mov #$10,@R2
+  br .loop
+  .skip:
+  mov #1,COUNTER
+  ld 2
+  add #4
+  st 2
+  br .cskip
   
 
 
