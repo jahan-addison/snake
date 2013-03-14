@@ -27,7 +27,9 @@
 
 ;; VARIABLES
 
-COUNTER = $20
+COUNTER = $30
+STOP    = $31
+STEP    = $32
 
 ;; Reset and Interrupt Vectors
 
@@ -143,17 +145,28 @@ goodbye:
  ;
 
 start:
+  ; For any game:
   mov #$a1,ocr
   mov #$09,mcr
   mov #$80,vccr
   clr1 p3int,0
   clr1 p1,7
   mov #$ff,p3
+
+  ; clear screen
+
   call clrscr
+
+  ; Move a pixel gracefully down the first LCD bank
+  mov #0,STOP
   mov #$80,2
   mov #1,COUNTER
   mov #$10,@R2
   .loop:
+  inc STOP
+  ld STOP
+  ; At 16, branch to next procedure in program
+  be #$f,.continue
   call pause
   mov #0,@R2
   ld 2
@@ -171,6 +184,39 @@ start:
   add #4
   st 2
   br .cskip
+
+  ; Move a pixel gracefully across the first LCD bank
+  .continue:
+  call clrscr
+  call pause
+  mov #$86,2
+  mov #0,COUNTER
+  ; 10000000: the beginning
+  mov #$80,@R2
+  .loopp:
+  call pause  
+  inc COUNTER
+  ld @R2
+  ror
+  st @R2
+  ld COUNTER
+  be #7,.next
+  br .loopp
+  .next:
+  mov #0,COUNTER
+  mov #0,@R2
+  ld 2
+  add #1
+  st 2
+  mov #$80,@R2
+  ; todo: divisible by 6
+  be #$8C,.done
+  br .loopp
+  
+  .done:
+  call pause
+  call clrscr
+
   
 
 
