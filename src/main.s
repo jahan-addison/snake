@@ -200,7 +200,7 @@ start:
   ror
   st @R2
   ld COUNTER
-  be #7,.next
+  be #8,.next
   br .loopp
   .next:
   mov #0,COUNTER
