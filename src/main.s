@@ -30,6 +30,8 @@
 COUNTER = $30
 STOP    = $31
 STEP    = $32
+X       = $33 ; horizontal position in frame buffer
+Y       = $34 ; vertical position in frame buffer
 
 ;; Reset and Interrupt Vectors
 
@@ -159,21 +161,22 @@ start:
 
   ; Move a pixel gracefully down the first LCD bank
   mov #0,STOP
-  mov #$80,2
+  mov #$86,2
   mov #1,COUNTER
   mov #$10,@R2
   .loop:
   inc STOP
   ld STOP
   ; At 16, branch to next procedure in program
-  be #$f,.continue
+  be #$10,.continue
   call pause
+  call moveup
   mov #0,@R2
   ld 2
   add #6
   st 2
   ld COUNTER
-  be #2,.skip
+ ; be #2,.skip
   inc COUNTER
   .cskip:
   mov #$10,@R2
@@ -216,6 +219,7 @@ start:
   .done:
   call pause
   call clrscr
+  jmp goodbye
 
   
 
@@ -229,6 +233,40 @@ start:
 
 
 ; Subroutines.
+
+; todo: move the adjacent 4 bytes between 2 lines logic here
+
+moveup:
+  ld 2
+  and #$f
+  bne #$6,.up
+  ld @R2
+  push acc
+  mov #0,@R2
+  ld 2
+  sub #12
+  st 2
+  pop acc
+  st @R2
+  .up:
+  ret
+
+; todo: move the adjacent 4 bytes between 2 lines logic here
+
+movedown:
+  ld 2
+  and #$f
+  bne #$6,.down
+  ld @R2
+  push acc
+  mov #0,@R2
+  ld 2
+  add #6
+  st 2
+  pop acc
+  st @R2
+  .down:
+  ret
 
 pause:
   mov #0,b
