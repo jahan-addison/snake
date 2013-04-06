@@ -159,65 +159,28 @@ start:
 
   call clrscr
 
-  ; Move a pixel gracefully down the first LCD bank
-  mov #0,STOP
-  mov #$86,2
-  mov #1,COUNTER
+  mov #0,Y
+  mov #$80,2
   mov #$10,@R2
-  .loop:
-  inc STOP
-  ld STOP
-  ; At 16, branch to next procedure in program
-  be #$10,.continue
-  call pause
-  call moveup
-  mov #0,@R2
-  ld 2
-  add #6
-  st 2
-  ld COUNTER
- ; be #2,.skip
-  inc COUNTER
-  .cskip:
-  mov #$10,@R2
-  br .loop
-  .skip:
-  mov #1,COUNTER
-  ld 2
-  add #4
-  st 2
-  br .cskip
 
-  ; Move a pixel gracefully across the first LCD bank
-  .continue:
-  call clrscr
+  ; Move a pixel gracefully down the LCD frame buffer
+  .downn:
   call pause
-  mov #$86,2
-  mov #0,COUNTER
-  ; 10000000: the beginning
-  mov #$80,@R2
-  .loopp:
-  call pause  
-  inc COUNTER
-  ld @R2
-  ror
-  st @R2
-  ld COUNTER
-  be #8,.next
-  br .loopp
-  .next:
-  mov #0,COUNTER
-  mov #0,@R2
-  ld 2
-  add #1
-  st 2
-  mov #$80,@R2
-  ; todo: divisible by 6
-  be #$8C,.done
-  br .loopp
+  call movedown
+  ld Y
+  be #31,.upp
+  br .downn
   
-  .done:
+  ; Move a pixel gracefully up the LCD frame buffer
+  .upp:
+  call moveup
   call pause
+  ld Y
+  bz .done
+  br .upp
+
+  ; We're done here
+  .done:
   call clrscr
   jmp goodbye
 
@@ -234,39 +197,103 @@ start:
 
 ; Subroutines.
 
-; todo: move the adjacent 4 bytes between 2 lines logic here
-
 moveup:
-  ld 2
-  and #$f
-  bne #$6,.up
+  ld Y
+  ; check if top of buffer
+  be #0,.up
+  ; branch to bank 0 coroutine at 16
+  be #$10,.ubank
+  ; check the lowest-order bit (big-endian) for even to skip
+  bn Y,0,.upskip
+  ; move down
+  .upcont:
+  dec Y
   ld @R2
   push acc
   mov #0,@R2
+  .upcontt:
   ld 2
-  sub #12
+  sub #6
   st 2
   pop acc
   st @R2
-  .up:
-  ret
-
-; todo: move the adjacent 4 bytes between 2 lines logic here
-
-movedown:
-  ld 2
-  and #$f
-  bne #$6,.down
+  br .up
+  .ubank:
+  ; save our current state for bank 0
   ld @R2
   push acc
   mov #0,@R2
+  mov #0,xbnk
+  ld 2
+  ; add by 118 to get the last row position on the new bank
+  add #$76
+  st 2
+  dec Y
+  pop acc
+  st @R2
+  ; we've moved up, we're done here
+  br .up
+  .upskip:
+  dec Y
+  ld @R2
+  mov #0,@R2
+  push acc
+  ld 2
+  sub #4
+  st 2
+  br .upcontt
+  .up:
+  ret
+
+
+movedown:
+  ld Y
+  ; check if bottom of buffer
+  be #$1F,.down
+  ; branch to bank 1 coroutine at 15
+  be #$f,.dbank
+  ; check the lowest-order bit (big-endian) for odd to skip
+  bp Y,0,.downskip
+  ; move down
+  .downcont:
+  inc Y
+  ld @R2
+  push acc
+  mov #0,@R2
+  .downcontt:
   ld 2
   add #6
   st 2
   pop acc
   st @R2
+  br .down
+  .dbank:
+  ; save our current state for bank 1
+  ld @R2
+  push acc
+  mov #0,@R2
+  mov #1,xbnk
+  ld 2
+  ; subtract by 118 to get the first row position on the new bank
+  sub #$76
+  st 2
+  inc Y
+  pop acc
+  st @R2
+  ; we've moved down, we're done here
+  br .down
+  .downskip:
+  inc Y
+  ld @R2
+  mov #0,@R2
+  push acc
+  ld 2
+  add #4
+  st 2
+  br .downcontt
   .down:
   ret
+
 
 pause:
   mov #0,b
