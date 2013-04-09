@@ -168,27 +168,58 @@ start:
 
   call clrscr
 
+  mov #2,X
   mov #0,Y
-  mov #$80,2
-  mov #$10,@R2
+  mov #$82,2
+  mov #$1,@R2
 
   ; Move a pixel gracefully down the LCD frame buffer
-  .downn:
+  .down:
   call pause
   call movedown
   ld Y
-  be #31,.upp
-  br .downn
+  be #31,.up
+  br .down
   
   ; Move a pixel gracefully up the LCD frame buffer
-  .upp:
+  .up:
   call moveup
   call pause
   ld Y
-  bz .done
-  br .upp
+  bz .continue
+  br .up
 
-  ; We're done here
+  .continue:
+  
+  call clrscr
+
+  mov #0,X
+  mov #$f,Y
+  mov #$F6,2
+  mov #$80,@R2
+
+
+  ; Move a pixel gracefully to right of the LCD frame buffer
+  .right:
+  call pause
+  call moveright
+  call pause
+  ld X
+  be #6,.left
+  br .right
+
+  ; Move a pixel gracefully to right of the LCD frame buffer
+
+  .left:
+  call pause
+  call moveleft
+  call pause
+  ld X
+  be #0,.done
+  br .left
+
+  ; quod erat demonstrandum.
+
   .done:
   call clrscr
   jmp goodbye
@@ -255,6 +286,95 @@ moveup:
   ret
 
 
+moveright:
+  ld X
+  ; check if buffer cannot move left any further
+  be #6,.right
+  ; when we're on the last, we ensure we move until the most-significant bit
+  be #5,.rightfinal
+  .rightcontinue:
+  ; move right
+  ld @R2
+  clr1 psw,7
+  rorc
+  ; check the carry flag for overflow of our bit, which 
+  ; means it's time to move to the next byte
+  bp psw,7,.rightnext
+  st @R2
+  br .right
+  .rightnext:
+  ; move right the next byte to prepare to store the most-significant bit of current
+  inc 2
+  ror
+  ld @R2
+  set1 acc,7
+  st @R2
+  ; clear the current most-significant bit. if the byte is
+  ; now clear, we can proceed with the next byte
+  dec 2
+  ld @R2
+  clr1 acc,0
+  st @R2
+  clr1 psw,7
+  bnz .right
+  inc X
+  ld X
+  inc 2
+  br .right
+  .rightfinal:
+  ld @R2
+  bp acc,0,.rightdone
+  br .rightcontinue
+  .rightdone:
+  inc X
+  .right:
+  ret
+
+
+moveleft:
+  ld X
+  ; check if buffer cannot move left any further
+  be #0,.left
+  ; when we're on the last, we ensure we move until the most-significant bit
+  be #1,.leftfinal
+  .leftcontinue:
+  ; move left
+  ld @R2
+  rolc
+  ; check the carry flag for overflow of our bit, which 
+  ; means it's time to move to the preceding byte
+  bp psw,7,.leftnext
+  st @R2
+  br .left
+  .leftnext:
+  ; move left the previous byte to prepare to store the most-significant bit of current
+  dec 2
+  rol
+  ld @R2
+  set1 acc,0
+  st @R2
+  ; clear the current most-significant bit. if the byte is
+  ; now clear, we can proceed with the preceding byte
+  inc 2
+  ld @R2
+  clr1 acc,7
+  st @R2
+  clr1 psw,7
+  bnz .left
+  dec X
+  ld X
+  dec 2
+  br .left
+  .leftfinal:
+  ld @R2
+  bp acc,7,.leftdone
+  br .leftcontinue
+  .leftdone:
+  dec X
+  .left:
+  ret
+
+   
 movedown:
   ld Y
   ; check if bottom of buffer
@@ -314,7 +434,7 @@ pause:
   bne #$ff,.run
   inc b
   ld b
-  bne #3,.start
+  bne #1,.start
   clr1 t1cnt, 7
   ret  
            
