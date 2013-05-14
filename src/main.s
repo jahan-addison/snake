@@ -36,9 +36,6 @@
 
 ;; VARIABLES
 
-COUNTER = $30
-STOP    = $31
-STEP    = $32
 X       = $33 ; horizontal position in frame buffer
 Y       = $34 ; vertical position in frame buffer
 
@@ -164,74 +161,42 @@ start:
   clr1 p1,7
   mov #$ff,p3
 
-  ; clear screen
-
   call clrscr
-
-  mov #2,X
-  mov #0,Y
-  mov #$82,2
-  mov #$1,@R2
-
-  ; Move a pixel gracefully down the LCD frame buffer
-  .down:
-  call pause
-  call movedown
-  ld Y
-  be #31,.up
-  br .down
-  
-  ; Move a pixel gracefully up the LCD frame buffer
-  .up:
-  call moveup
-  call pause
-  ld Y
-  bz .continue
-  br .up
-
-  .continue:
-  
-  call clrscr
-
-  mov #0,X
+  mov #3,X
   mov #$f,Y
-  mov #$F6,2
-  mov #$80,@R2
-
-
-  ; Move a pixel gracefully to right of the LCD frame buffer
-  .right:
-  call pause
-  call moveright
-  call pause
-  ld X
-  be #6,.left
-  br .right
-
-  ; Move a pixel gracefully to right of the LCD frame buffer
-
-  .left:
-  call pause
-  call moveleft
-  call pause
-  ld X
-  be #0,.done
-  br .left
-
-  ; quod erat demonstrandum.
-
-  .done:
-  call clrscr
-  jmp goodbye
-
-  
-
+  mov #$F8,2
+  mov #$1,@R2
 
 .keypress:
   call getkeys
   bn acc,4,.keypress    
   bn acc,5,.keypress     
- 
+  bn acc,3,.moveright
+  bn acc,2,.moveleft
+  bn acc,1,.movedown
+  bn acc,0,.moveup
+  br .done
+
+  .moveright:
+  call pause
+  call moveright
+  call pause
+  br .done
+  .moveleft:
+  call pause
+  call moveleft
+  call pause
+  br .done
+  .movedown:
+  call pause
+  call movedown
+  br .done
+  .moveup:
+  call pause
+  call moveup
+  br .done
+
+  .done:  
   br .keypress            
 
 
@@ -288,7 +253,7 @@ moveup:
 
 moveright:
   ld X
-  ; check if buffer cannot move left any further
+  ; check if buffer cannot move right any further
   be #6,.right
   ; when we're on the last, we ensure we move until the most-significant bit
   be #5,.rightfinal
@@ -434,7 +399,7 @@ pause:
   bne #$ff,.run
   inc b
   ld b
-  bne #1,.start
+ ; bne #1,.start
   clr1 t1cnt, 7
   ret  
            
