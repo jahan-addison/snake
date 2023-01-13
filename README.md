@@ -18,7 +18,8 @@ As i experiment with the device's firmware, CPU, and LCD frame buffer i am slowl
   
   
   
-  
+  ![vmu2-73df3cf7b](https://user-images.githubusercontent.com/302171/212428369-d1a48610-47a0-4d67-b3fd-94ad0c249d6a.png)
+
   
   
   
